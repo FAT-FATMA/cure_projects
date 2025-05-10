@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "335942018152",
+    "project_id": "fatima-cure-app-1f4d1",
+    "storage_bucket": "fatima-cure-app-1f4d1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335942018152:android:e2c19424de29cb4f09c7dd",
+        "android_client_info": {
+          "package_name": "com.example.app_name"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQzLnFFTt_EoHpF_rU4RlcdRd8cCYc-J4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335942018152:android:91fa8af927c5e2ce09c7dd",
+        "android_client_info": {
+          "package_name": "com.example.cure"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQzLnFFTt_EoHpF_rU4RlcdRd8cCYc-J4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
