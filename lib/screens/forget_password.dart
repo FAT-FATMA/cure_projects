@@ -36,7 +36,7 @@ class ForgetpassScreen extends StatelessWidget {
                   textFeildHint: 'Email',
                   isObsecures: false,
                   onChange: (value) {
-                    email = value; // <-- هنا
+                    email = value; 
                   },
                 ),
 
