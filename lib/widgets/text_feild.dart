@@ -6,7 +6,7 @@ class TextFeild extends StatelessWidget {
   final Function(String) onChange;
   // Callback function to handle text changes
   //TextEditingController nameController = TextEditingController();
-  //String selectedUserType = 'patient'; // أو دكتور
+  //String selectedUserType = 'patient'; 
 
   TextFeild({
     super.key,
@@ -30,19 +30,6 @@ class TextFeild extends StatelessWidget {
         ),
       ),
     );
-    /* DropdownButton<String>(
-  value: selectedUserType,
-  onChanged: (String? newValue) {
-    setState(() {
-      selectedUserType = newValue!;
-    });
-  },
-  items: <String>['patient', 'doctor']
-      .map<DropdownMenuItem<String>>((String value) {
-    return DropdownMenuItem<String>(
-      value: value,
-      child: Text(value),
-    );
-  }).toList(),*/
+   
   }
 }
