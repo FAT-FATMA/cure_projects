@@ -12,23 +12,7 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
-  void initState() {
-    super.initState();
-    checkLoginStatus();
-  }
-
-  Future<void> checkLoginStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-
-    await Future.delayed(const Duration(milliseconds: 300));
-
-    if (!mounted) return;
-
-    if (isLoggedIn) {
-      Navigator.pushReplacementNamed(context, '/home');
-    }
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
