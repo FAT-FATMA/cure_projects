@@ -81,7 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       try {
                         await registerUser(name, selectedUserType);
                         // Navigate to home or wherever you want
-                        Navigator.popAndPushNamed(context, '/home');
+                        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'weak-password') {
                           showErrorMessage(
@@ -149,9 +149,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<void> registerUser(String name, String userType) async {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+    final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    final user = credential.user;
+
+    if (user == null) {
+      throw StateError('Unable to create the user account.');
+    }
+
+    await user.updateDisplayName(name);
 
     final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username_${user.uid}', name);
+    await prefs.setString('usertype_${user.uid}', userType);
     await prefs.setString('username', name);
     await prefs.setString('usertype', userType);
     await prefs.setBool('isLoggedIn', true);

@@ -13,118 +13,66 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 1;
-  final List<Widget> _screens = [
+
+  late final List<Widget> _screens = const [
     HospitalsScreen(),
     StatusScreen(),
     MedicinesScreen(),
   ];
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    bool ishome = true,ismap = false, ispill = false;
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Cure',
-      theme: ThemeData(),
-      home: Scaffold(
-        appBar: HomeAppbar(),
-        body: _screens[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) => setState(() => _currentIndex = index),
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.grey,
-          items:  [
-            
-            BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                 Image.asset(
-                    'lib/assets/icons/hospital_icon.png',
-                    width: 24,
-                    height: 24,
-                   
-                 ),
-                  SizedBox(height: 4),
-                ],
-              ),
-              label: 'Hospitals',
-              
-              activeIcon: Column(
-                children: [
-                 Image.asset(
-                    'lib/assets/icons/hospital_icon.png',
-                    width: 24,
-                    height: 24,
-                    color:const Color(0xFF1363DF)
-                    
-                 ),
-                  SizedBox(height: 8),
-                ],
-              ),
-
+    return Scaffold(
+      appBar: HomeAppbar(),
+      body: _screens[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) => setState(() => _currentIndex = index),
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        items: [
+          BottomNavigationBarItem(
+            icon: Image.asset(
+              'lib/assets/icons/hospital_icon.png',
+              width: 24,
+              height: 24,
             ),
-              
-            BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                 Image.asset(
-                    'lib/assets/icons/home_icon.png',
-                    width: 24,
-                    height: 24,
-                   
-                 ),
-                  SizedBox(height: 4),
-                ],
-              ),
-              label: 'Home',
-              
-              activeIcon: Column(
-                children: [
-                 Image.asset(
-                    'lib/assets/icons/home_icon.png',
-                    width: 24,
-                    height: 24,
-                    color:const Color(0xFF1363DF)
-                    
-                 ),
-                  SizedBox(height: 8),
-                ],
-              ),
-
+            activeIcon: Image.asset(
+              'lib/assets/icons/hospital_icon.png',
+              width: 24,
+              height: 24,
+              color: const Color(0xFF1363DF),
             ),
-              
-            BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                 Image.asset(
-                    'lib/assets/icons/pill_icon.png',
-                    width: 24,
-                    height: 24,
-                    
-                   
-                 ),
-                  SizedBox(height: 4),
-                ],
-              ),
-              label: 'Hospitals',
-              
-              activeIcon: Column(
-                children: [
-                 Image.asset(
-                    'lib/assets/icons/pill_icon_colored.png',
-                    width: 24,
-                    height: 24,
-                    
-                 ),
-                  SizedBox(height: 8),
-                ],
-              ),
-
+            label: 'Hospitals',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset(
+              'lib/assets/icons/home_icon.png',
+              width: 24,
+              height: 24,
             ),
-          ],
-        ),
+            activeIcon: Image.asset(
+              'lib/assets/icons/home_icon.png',
+              width: 24,
+              height: 24,
+              color: const Color(0xFF1363DF),
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset(
+              'lib/assets/icons/pill_icon.png',
+              width: 24,
+              height: 24,
+            ),
+            activeIcon: Image.asset(
+              'lib/assets/icons/pill_icon_colored.png',
+              width: 24,
+              height: 24,
+            ),
+            label: 'Medicines',
+          ),
+        ],
       ),
     );
   }

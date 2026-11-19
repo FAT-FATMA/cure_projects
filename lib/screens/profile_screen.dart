@@ -1,22 +1,20 @@
-import 'package:cure/main.dart';
+import 'package:cure/buisness/medicine/medicine_notifier.dart';
 import 'package:cure/screens/appointments_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../buisness/medicine/medicine_notifier.dart';
-
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) { // Added WidgetRef parameter
-    Future<String> getName() async {
-      final prefs = await SharedPreferences.getInstance();
-      return prefs.getString('username') ?? 'Guest'; // Added fallback
-    }
+  Future<String> _getName() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('username') ?? 'Guest';
+  }
 
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -34,7 +32,7 @@ class ProfileScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 10),
             FutureBuilder<String>(
-              future: getName(),
+              future: _getName(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
@@ -50,7 +48,9 @@ class ProfileScreen extends ConsumerWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const AppointmentsScreen()),
+                  MaterialPageRoute(
+                    builder: (_) => const AppointmentsScreen(),
+                  ),
                 );
               },
               leading: const Icon(Icons.calendar_today),
@@ -59,7 +59,7 @@ class ProfileScreen extends ConsumerWidget {
             ),
             const Divider(),
             ListTile(
-              onTap: () => _logout(context, ref), // Pass ref directly
+              onTap: () => _logout(context, ref),
               leading: const Icon(Icons.logout, color: Colors.red),
               title: const Text(
                 'Sign Out',
@@ -72,19 +72,22 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
+  Future<void> _logout(BuildContext context, WidgetRef ref) async {
+    final prefs = await SharedPreferences.getInstance();
 
+    // Medication records are local to this installation; clear them on sign-out
+    // so another account using the same device cannot see the previous user's data.
+    await ref.read(pillProvider.notifier).clearAllMedicines();
 
-
-  Future<void> _logout(context,ref) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    
-    ref.read(pillProvider.notifier).clearAllMedicines(); // Clear all pills from the provider
     await prefs.remove('email');
     await prefs.remove('password');
+    await prefs.remove('username');
+    await prefs.remove('usertype');
     await prefs.setBool('isLoggedIn', false);
+
     await FirebaseAuth.instance.signOut();
-   Navigator.of(context).popUntil((route) => false); // Clear all routes
-   runApp(ProviderScope(child:Cure()));
+
+    if (!context.mounted) return;
+    Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
   }
- 
 }

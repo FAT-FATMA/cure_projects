@@ -1,5 +1,3 @@
-import 'package:cure/database/medicine_dao.dart';
-import 'package:cure/database/medicine_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cure/widgets/text_feild.dart';
@@ -15,8 +13,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String email = '';
   String password = '';
-  bool isLoggedIn = false;
-  final MedicineDao _dao = MedicineDao(MedicineDataBase.instance);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,19 +55,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     }
 
                     try {
-                      await FirebaseAuth.instance.signInWithEmailAndPassword(
-                        email: email,
-                        password: password,
-                      );
+                      final credential = await FirebaseAuth.instance
+                          .signInWithEmailAndPassword(
+                            email: email,
+                            password: password,
+                          );
+                      final user = credential.user;
+                      if (user == null) {
+                        throw StateError('Unable to load the signed-in account.');
+                      }
 
-                      await _dao.createTable();
                       final prefs = await SharedPreferences.getInstance();
+                      final savedName = prefs.getString('username_${user.uid}');
+                      final savedUserType = prefs.getString('usertype_${user.uid}');
+
                       await prefs.setString(
                         'username',
-                        'Adham Elnomairy', //replaced with the data come from database
+                        savedName ?? user.displayName ?? email.split('@').first,
                       );
-                      await prefs.setString('usertype', 'patient');
-
+                      await prefs.setString('usertype', savedUserType ?? 'patient');
                       await prefs.setBool('isLoggedIn', true);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -82,14 +84,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
 
-                      Navigator.popAndPushNamed(context, '/home');
+                      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'user-not-found') {
                         showErrorMessage(
                           context,
                           'No user found for that email.',
                         );
-                      } else if (e.code == 'wrong-password') {
+                      } else if (e.code == 'wrong-password' || e.code == 'invalid-credential') {
                         showErrorMessage(context, 'Wrong password provided.');
                       } else {
                         showErrorMessage(context, e.message ?? 'Login failed');

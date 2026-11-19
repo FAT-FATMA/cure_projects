@@ -2,64 +2,31 @@ import 'dart:developer';
 
 import 'package:cure/buisness/medicine/medicine.dart';
 import 'package:cure/database/medicine_database.dart';
-import 'package:sqflite/sqflite.dart';
 
 class MedicineDao {
   final MedicineDataBase _database;
 
   MedicineDao(this._database);
 
-  // Insert a new medicine
   Future<int> insertMedicine(Medicine medicine) async {
     final db = await _database.database;
-    return await db.insert(
-      'medicines',
-      medicine.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    return db.insert('medicines', medicine.toMap());
   }
 
-  Future<void> createTable() async {
+  Future<void> clearAllMedicines() async {
     final db = await _database.database;
-    await db.execute('''
-  CREATE TABLE medicines (
-    id INTEGER NOT NULL,
-    medicine_name TEXT NOT NULL,
-    dose DECIMAL NOT NULL,
-    image_path TEXT NOT NULL,
-    frequency TEXT NOT NULL,
-    period INTEGER NOT NULL,  
-    taken INTEGER NOT NULL,
-    next_date TEXT NOT NULL
-  )
-''');
-    log('Table medicines created successfully!');
+    await db.delete('medicines');
+    log('All medicine records cleared.');
   }
 
-  Future<void> dropMedicineTable() async {
-    final db = await _database.database;
-    await db.execute('DROP TABLE IF EXISTS medicines');
-    log('Table medicines dropped successfully!');
-  }
-
-  // Delete a medicine by ID
   Future<int> deleteMedicine(int id) async {
-    log('Removing pill with ID: $id');
-
     final db = await _database.database;
-    return await db.delete('medicines', where: 'id = ?', whereArgs: [id]);
+    return db.delete('medicines', where: 'id = ?', whereArgs: [id]);
   }
 
-  Future<void> printAllMedicineIds() async {
-    final db = await _database.database;
-    final List<Map<String, dynamic>> medicines = await db.query('medicines');
-    log('All IDs in DB: ${medicines.map((m) => m['id']).toList()}');
-  }
-
-  // Update an existing medicine
   Future<int> updateMedicine(Medicine medicine, int id) async {
     final db = await _database.database;
-    return await db.update(
+    return db.update(
       'medicines',
       medicine.toMap(),
       where: 'id = ?',
@@ -67,14 +34,12 @@ class MedicineDao {
     );
   }
 
-  // Get all medicines
   Future<List<Medicine>> getAllMedicines() async {
     final db = await _database.database;
-    final List<Map<String, dynamic>> maps = await db.query('medicines');
-    return List.generate(maps.length, (i) => Medicine.fromMap(maps[i]));
+    final maps = await db.query('medicines');
+    return maps.map(Medicine.fromMap).toList();
   }
 
-  // Get a specific medicine by ID
   Future<Medicine?> getMedicineById(int id) async {
     final db = await _database.database;
     final maps = await db.query(
@@ -83,17 +48,24 @@ class MedicineDao {
       whereArgs: [id],
       limit: 1,
     );
-    return maps.isNotEmpty ? Medicine.fromMap(maps.first) : null;
+
+    return maps.isEmpty ? null : Medicine.fromMap(maps.first);
   }
 
-  // Get medicines that need to be taken at a specific time
   Future<List<Medicine>> getMedicinesByDate(DateTime date) async {
     final db = await _database.database;
     final maps = await db.query(
       'medicines',
       where: 'next_date = ?',
-      whereArgs: [date],
+      whereArgs: [date.toIso8601String()],
     );
-    return List.generate(maps.length, (i) => Medicine.fromMap(maps[i]));
+
+    return maps.map(Medicine.fromMap).toList();
+  }
+
+  Future<void> printAllMedicineIds() async {
+    final db = await _database.database;
+    final medicines = await db.query('medicines');
+    log('All IDs in DB: ${medicines.map((medicine) => medicine['id']).toList()}');
   }
 }
