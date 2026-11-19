@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cure/widgets/text_feild.dart';
 
+// ignore: must_be_immutable
 class ForgetpassScreen extends StatelessWidget {
   ForgetpassScreen({super.key});
   String email = '';

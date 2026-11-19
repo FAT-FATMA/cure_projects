@@ -1,7 +1,5 @@
-//import 'package:cure/screens/login_screen.dart';
 import 'package:flutter/material.dart';
-//import 'package:finalproject/widgets/elevated_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -23,7 +21,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'lib/assets/value.png',
+              'lib/assets/Logo.png',
               height: 200,
               fit: BoxFit.contain,
             ),
@@ -39,21 +37,21 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
             const SizedBox(height: 40),
             OutlinedButton(
-              onPressed: () => Navigator.pushNamed(context, '/login'),
+              onPressed: () => Navigator.popAndPushNamed(context, '/login'),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
-                backgroundColor: Colors.black,
+                backgroundColor: Color(0xff1877f2),
                 foregroundColor: Colors.white,
               ),
               child: const Text("Sign In"),
             ),
             const SizedBox(height: 10),
             OutlinedButton(
-              onPressed: () => Navigator.pushNamed(context, '/signup'),
+              onPressed: () => Navigator.popAndPushNamed(context, '/signup'),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
                 backgroundColor: Colors.white30,
-                foregroundColor: Colors.black,
+                foregroundColor: Color(0xff1877f2),
               ),
               child: const Text("Create account"),
             ),

@@ -1,13 +1,9 @@
-import 'package:cure/show_massage.dart';
+import 'package:cure/database/medicine_dao.dart';
+import 'package:cure/database/medicine_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cure/widgets/text_feild.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cure/widgets/Dropdown.dart';
-import 'package:cure/widgets/text_feild.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,11 +15,17 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String email = '';
   String password = '';
-
+  bool isLoggedIn = false;
+  final MedicineDao _dao = MedicineDao(MedicineDataBase.instance);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Hi, Welcome! 👋")),
+      appBar: AppBar(
+        title: Text(
+          "Hi, Welcome! 👋",
+          style: TextStyle(color: Color(0xff1877f2)),
+        ),
+      ),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -49,26 +51,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   onChange: (value) => password = value.trim(),
                 ),
                 SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Checkbox(value: true, onChanged: (_) {}),
-                        Text("Remember me"),
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap:
-                          () =>
-                              Navigator.pushNamed(context, '/forgot-password'),
-                      child: Text(
-                        "Forgot password?",
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                    ),
-                  ],
-                ),
                 ElevatedButton(
                   onPressed: () async {
                     if (email.isEmpty || password.isEmpty) {
@@ -82,15 +64,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         password: password,
                       );
 
-                     
+                      await _dao.createTable();
                       final prefs = await SharedPreferences.getInstance();
                       await prefs.setString(
                         'username',
-                        'Fatma',
-                      ); 
-                      await prefs.setString('usertype', 'patient'); // أو doctor
-                      await prefs.setBool('isLoggedIn', true);
+                        'Adham Elnomairy', //replaced with the data come from database
+                      );
+                      await prefs.setString('usertype', 'patient');
 
+                      await prefs.setBool('isLoggedIn', true);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
@@ -100,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
 
-                      Navigator.pushReplacementNamed(context, '/home');
+                      Navigator.popAndPushNamed(context, '/home');
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'user-not-found') {
                         showErrorMessage(
@@ -118,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size.fromHeight(50),
-                    backgroundColor: Colors.black,
+                    backgroundColor: Color(0xff1877f2),
                     foregroundColor: Colors.white,
                   ),
                   child: Text("Log in"),
@@ -146,9 +128,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 20),
                 Center(
                   child: GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, '/signup'),
+                    onTap: () => Navigator.popAndPushNamed(context, '/signup'),
+
                     child: Text(
                       "Don’t have an account? Sign up",
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ),
+
+                Center(
+                  child: GestureDetector(
+                    onTap:
+                        () => Navigator.pushNamed(context, '/forgot-password'),
+                    child: Text(
+                      "Forgot password?",
                       style: TextStyle(color: Colors.blue),
                     ),
                   ),
@@ -167,5 +161,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
-

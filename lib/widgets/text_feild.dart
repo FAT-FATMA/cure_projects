@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class TextFeild extends StatelessWidget {
   String textFeildHint;
   bool isObsecures;
@@ -22,7 +23,7 @@ class TextFeild extends StatelessWidget {
       onChanged: onChange,
       decoration: InputDecoration(
         hintText: textFeildHint,
-        fillColor: Colors.grey.shade200,
+        fillColor: const Color.fromARGB(255, 197, 219, 255),
         filled: true,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),

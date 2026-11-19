@@ -1,15 +1,13 @@
-import 'package:cure/show_massage.dart';
 import 'package:cure/widgets/Dropdown.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cure/widgets/text_feild.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cure/widgets/text_feild.dart';
+
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
@@ -32,7 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               children: [
                 Text(
                   "Sign up",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Color(0xff1877f2)),
                 ),
                 SizedBox(height: 20),
                 TextFeild(
@@ -83,7 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       try {
                         await registerUser(name, selectedUserType);
                         // Navigate to home or wherever you want
-                        Navigator.pushReplacementNamed(context, '/home');
+                        Navigator.popAndPushNamed(context, '/home');
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'weak-password') {
                           showErrorMessage(
@@ -108,7 +106,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size.fromHeight(50),
-                    backgroundColor: Colors.black,
+                    backgroundColor: Color(0xff1877f2),
                     foregroundColor: Colors.white,
                   ),
                   child: Text("Sign up"),
@@ -135,7 +133,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 SizedBox(height: 20),
                 GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, '/login'),
+                  onTap: () => Navigator.popAndPushNamed(context, '/login'),
                   child: Text(
                     "Already have an account? Log in",
                     style: TextStyle(color: Colors.blue),
@@ -151,8 +149,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<void> registerUser(String name, String userType) async {
-    final UserCredential user = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('username', name);
