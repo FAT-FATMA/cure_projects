@@ -82,7 +82,7 @@ This repository is a learning/prototype application, not a production-ready heal
 - The hospital map screen is a placeholder. The hospital service still contains a placeholder API endpoint.
 - The appointments screen is a static UI demonstration, not a live appointment-booking feature.
 - Alarm/notification service code is present but is not connected to the medication creation flow. Do not rely on it for medication reminders.
-- The current local medication schema is not yet account-scoped. Avoid sharing one installation between multiple accounts until per-user data isolation is implemented.
+- Medication records are stored locally and are not account-scoped. To reduce the risk of exposing one account's records to another person on the same device, signing out currently clears the local medication table. Data is not recoverable from the app after sign-out.
 
 ## Attribution
 
