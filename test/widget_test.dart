@@ -1,30 +1,29 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
+import 'package:cure/buisness/medicine/medicine.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:cure/main.dart';
-
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget( Cure());
+  group('Medicine model', () {
+    test('serializes and restores a medicine record', () {
+      final scheduledTime = DateTime(2026, 11, 19, 9, 30);
+      final medicine = Medicine(
+        id: 7,
+        medicineName: 'Vitamin C',
+        dose: 1,
+        frequency: 'Daily',
+        period: 14,
+        taken: 2,
+        next_date: scheduledTime,
+      );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      final restored = Medicine.fromMap(medicine.toMap());
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      expect(restored.id, 7);
+      expect(restored.medicineName, 'Vitamin C');
+      expect(restored.dose, 1);
+      expect(restored.frequency, 'Daily');
+      expect(restored.period, 14);
+      expect(restored.taken, 2);
+      expect(restored.next_date, scheduledTime);
+    });
   });
 }

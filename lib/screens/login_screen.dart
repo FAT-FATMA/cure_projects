@@ -67,7 +67,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       final prefs = await SharedPreferences.getInstance();
                       final savedName = prefs.getString('username_${user.uid}');
-                      final savedUserType = prefs.getString('usertype_${user.uid}');
+                      final savedUserType = prefs.getString('usertype_${user.uid}') ??
+                          prefs.getString('usertype');
 
                       await prefs.setString(
                         'username',

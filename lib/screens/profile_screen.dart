@@ -1,5 +1,6 @@
 import 'package:cure/buisness/medicine/medicine_notifier.dart';
 import 'package:cure/screens/appointments_screen.dart';
+import 'package:cure/screens/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -88,6 +89,9 @@ class ProfileScreen extends ConsumerWidget {
     await FirebaseAuth.instance.signOut();
 
     if (!context.mounted) return;
-    Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const WelcomeScreen()),
+      (route) => false,
+    );
   }
 }
