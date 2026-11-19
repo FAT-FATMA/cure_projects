@@ -18,10 +18,11 @@ final pillProvider =
     });
 
 final nextClosestMedicineProvider = StateProvider<Medicine?>((ref) {
-  final upcomingMedicines = ref
-      .watch(pillProvider)
-      .where((medicine) => medicine.next_date != null)
-      .toList();
+  final upcomingMedicines =
+      ref
+          .watch(pillProvider)
+          .where((medicine) => medicine.next_date != null)
+          .toList();
 
   if (upcomingMedicines.isEmpty) return null;
 
@@ -71,11 +72,12 @@ class MedicineNotifierProvider extends StateNotifier<List<Medicine>> {
 
   Future<void> updatePill(Medicine updatedPill) async {
     await _dao.updateMedicine(updatedPill, updatedPill.id);
-    state = state
-        .map(
-          (medicine) =>
-              medicine.id == updatedPill.id ? updatedPill : medicine,
-        )
-        .toList();
+    state =
+        state
+            .map(
+              (medicine) =>
+                  medicine.id == updatedPill.id ? updatedPill : medicine,
+            )
+            .toList();
   }
 }

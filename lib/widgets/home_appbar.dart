@@ -64,7 +64,11 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
-          icon: Image.asset('lib/assets/icons/add_pill.png', width: 30, height: 30),
+          icon: Image.asset(
+            'lib/assets/icons/add_pill.png',
+            width: 30,
+            height: 30,
+          ),
           onPressed: () {
             Navigator.push(
               context,

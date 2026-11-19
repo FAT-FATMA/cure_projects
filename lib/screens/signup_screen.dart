@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:cure/widgets/text_feild.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -30,7 +29,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               children: [
                 Text(
                   "Sign up",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Color(0xff1877f2)),
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff1877f2),
+                  ),
                 ),
                 SizedBox(height: 20),
                 TextFeild(
@@ -81,7 +84,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       try {
                         await registerUser(name, selectedUserType);
                         // Navigate to home or wherever you want
-                        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/home',
+                          (route) => false,
+                        );
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'weak-password') {
                           showErrorMessage(
@@ -149,10 +156,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<void> registerUser(String name, String userType) async {
-    final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    final credential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
     final user = credential.user;
 
     if (user == null) {
@@ -173,4 +178,3 @@ class _SignUpScreenState extends State<SignUpScreen> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 }
-

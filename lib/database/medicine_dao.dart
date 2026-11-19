@@ -66,6 +66,8 @@ class MedicineDao {
   Future<void> printAllMedicineIds() async {
     final db = await _database.database;
     final medicines = await db.query('medicines');
-    log('All IDs in DB: ${medicines.map((medicine) => medicine['id']).toList()}');
+    log(
+      'All IDs in DB: ${medicines.map((medicine) => medicine['id']).toList()}',
+    );
   }
 }

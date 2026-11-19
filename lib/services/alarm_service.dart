@@ -43,17 +43,14 @@ class AlarmService {
       id,
       'Pill Reminder',
       'Time to take $pillName',
-     tz.TZDateTime.now(tz.local).add(
-        Duration(
-          hours: time!.hour,
-          minutes: time.minute,
-        ),
-      ),
+      tz.TZDateTime.now(
+        tz.local,
+      ).add(Duration(hours: time!.hour, minutes: time.minute)),
       NotificationDetails(android: androidDetails),
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
-      payload: pillName, androidScheduleMode: AndroidScheduleMode.exact,
-      
+      payload: pillName,
+      androidScheduleMode: AndroidScheduleMode.exact,
     );
 
     // Schedule background callback
@@ -61,13 +58,19 @@ class AlarmService {
       const Duration(hours: 24), // Repeat every 24 hours
       id,
       _triggerAlarm,
-      startAt: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, time.hour,time.minute),
+      startAt: DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+        time.hour,
+        time.minute,
+      ),
       exact: true,
       wakeup: true,
       rescheduleOnReboot: true,
     );
   }
- 
+
   @pragma('vm:entry-point')
   static void _triggerAlarm() {
     try {
@@ -75,9 +78,7 @@ class AlarmService {
       const pillName = 'your medicine';
       Navigator.push(
         PillReminderScreen() as BuildContext,
-        MaterialPageRoute(
-          builder: (context) => PillReminderScreen(),
-        ),
+        MaterialPageRoute(builder: (context) => PillReminderScreen()),
       );
       // Show notification
       _showPillNotification(pillName);
@@ -96,7 +97,7 @@ class AlarmService {
       'Time to take $pillName',
       NotificationDetails(
         android: AndroidNotificationDetails(
-          'pill_channel', 
+          'pill_channel',
           'Pill Reminders',
           importance: Importance.max,
           priority: Priority.high,
@@ -106,18 +107,17 @@ class AlarmService {
     );
   }
 }
-  //  tz.TZDateTime _nextTime(TimeOfDay time) {
-  //   final now = tz.TZDateTime.now(tz.local);
-  //   var scheduled = tz.TZDateTime(
-  //     tz.local,
-  //     now.year,
-  //     now.month,
-  //     now.day,
-  //     time.hour,
-  //     time.minute,
-  //   );
-  //   if (scheduled.isBefore(now))
-  //     scheduled = scheduled.add(const Duration(days: 1));
-  //   return scheduled;
-  // }
-
+//  tz.TZDateTime _nextTime(TimeOfDay time) {
+//   final now = tz.TZDateTime.now(tz.local);
+//   var scheduled = tz.TZDateTime(
+//     tz.local,
+//     now.year,
+//     now.month,
+//     now.day,
+//     time.hour,
+//     time.minute,
+//   );
+//   if (scheduled.isBefore(now))
+//     scheduled = scheduled.add(const Duration(days: 1));
+//   return scheduled;
+// }

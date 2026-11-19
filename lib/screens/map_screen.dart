@@ -10,5 +10,4 @@ class HospitalsScreen extends StatelessWidget {
       body: Center(child: Text("Map will be displayed here")),
     );
   }
-  
 }

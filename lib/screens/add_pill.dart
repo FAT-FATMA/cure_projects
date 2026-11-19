@@ -77,15 +77,15 @@ class _AddPillState extends ConsumerState<AddPill> {
   DateTime? calculateNextDate() {
     DateTime? startDate = _parseDate(_startDateController.text);
     startDate = DateTime(
-        startDate!.year,
-        startDate.month,
-        startDate.day,
-        _selectedTime.hour,
-        _selectedTime.minute,
-);
+      startDate!.year,
+      startDate.month,
+      startDate.day,
+      _selectedTime.hour,
+      _selectedTime.minute,
+    );
     log('Start Date: $startDate');
     final now = DateTime.now();
-   
+
     final difference = startDate.difference(now);
     log('difference: $difference');
     if (difference.isNegative) {
@@ -95,7 +95,7 @@ class _AddPillState extends ConsumerState<AddPill> {
         case 'Weekly':
           return startDate.add(const Duration(days: 7));
         case 'Monthly':
-          return DateTime(startDate.year,startDate.month + 1,startDate.day);
+          return DateTime(startDate.year, startDate.month + 1, startDate.day);
         default:
           return null;
       }
@@ -106,9 +106,7 @@ class _AddPillState extends ConsumerState<AddPill> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add New Medicine'),
-      ),
+      appBar: AppBar(title: const Text('Add New Medicine')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -116,28 +114,28 @@ class _AddPillState extends ConsumerState<AddPill> {
           children: [
             TextField(
               controller: _medicineController,
-              decoration:  InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Medicine Name',
                 fillColor: const Color.fromARGB(255, 197, 219, 255),
-                 filled: true,
-                 border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
-        ),
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
               ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _doseController,
               keyboardType: TextInputType.number,
-              decoration:  InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Dose',
                 fillColor: const Color.fromARGB(255, 197, 219, 255),
                 filled: true,
                 border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-               borderSide: BorderSide.none,
-        ),
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -170,7 +168,7 @@ class _AddPillState extends ConsumerState<AddPill> {
       decoration: InputDecoration(
         labelText:
             isStartDate ? 'Start Date (YYYY-MM-DD)' : 'End Date (YYYY-MM-DD)',
-     fillColor: const Color.fromARGB(255, 197, 219, 255),
+        fillColor: const Color.fromARGB(255, 197, 219, 255),
         filled: true,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -189,7 +187,7 @@ class _AddPillState extends ConsumerState<AddPill> {
   Widget _buildTimeField(BuildContext context) {
     return TextField(
       controller: _timeController,
-      decoration:  InputDecoration(
+      decoration: InputDecoration(
         labelText: 'Time',
         fillColor: const Color.fromARGB(255, 197, 219, 255),
         filled: true,
@@ -206,8 +204,7 @@ class _AddPillState extends ConsumerState<AddPill> {
 
   Widget _buildFrequencyDropdown() {
     return InputDecorator(
-      decoration:  InputDecoration(
-
+      decoration: InputDecoration(
         labelText: 'Frequency',
         fillColor: const Color.fromARGB(255, 197, 219, 255),
         filled: true,
@@ -238,9 +235,9 @@ class _AddPillState extends ConsumerState<AddPill> {
         _startDateController.text.isEmpty ||
         _endDateController.text.isEmpty ||
         _timeController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please fill all fields')));
       return;
     }
 
@@ -248,9 +245,9 @@ class _AddPillState extends ConsumerState<AddPill> {
     final endDate = _parseDate(_endDateController.text);
 
     if (startDate == null || endDate == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Invalid date format')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Invalid date format')));
       return;
     }
 
@@ -274,11 +271,12 @@ class _AddPillState extends ConsumerState<AddPill> {
     }
 
     final newMedicine = Medicine(
-        // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
-      id: ref.read(pillProvider.notifier).state.isEmpty
-          ? 1
-          // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
-          : ref.read(pillProvider.notifier).state.last.id + 1,
+      // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+      id:
+          ref.read(pillProvider.notifier).state.isEmpty
+              ? 1
+              // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+              : ref.read(pillProvider.notifier).state.last.id + 1,
       medicineName: _medicineController.text,
       dose: dose,
       frequency: _selectedFrequency,

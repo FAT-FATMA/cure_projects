@@ -4,10 +4,10 @@ import 'package:path/path.dart';
 class MedicineDataBase {
   // Singleton instance
   static final MedicineDataBase instance = MedicineDataBase._init();
-  
+
   // Database reference
   static Database? _database;
-  
+
   // Private constructor
   MedicineDataBase._init();
 
@@ -23,18 +23,12 @@ class MedicineDataBase {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(
-      path,
-      version: 1,
-      onCreate: _createDB,
-
-      
-    );
+    return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
   // Create database tables
   Future _createDB(Database db, int version) async {
- await db.execute('''
+    await db.execute('''
   CREATE TABLE medicines (
     id INTEGER NOT NULL,
     medicine_name TEXT NOT NULL,
@@ -46,8 +40,8 @@ class MedicineDataBase {
     next_date TEXT NOT NULL
   )
 ''');
-    
   }
+
   // Close the database (good practice to have this)
   Future close() async {
     final db = await instance.database;

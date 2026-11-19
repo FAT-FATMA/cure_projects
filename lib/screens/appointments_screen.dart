@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class AppointmentsScreen extends StatelessWidget {
@@ -12,14 +11,14 @@ class AppointmentsScreen extends StatelessWidget {
           children: [
             const SizedBox(width: 10),
             ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image(
-                    image: AssetImage("lib/assets/profile_logo.png"),
-                    width: 40,
-                    height: 40,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+              borderRadius: BorderRadius.circular(20),
+              child: Image(
+                image: AssetImage("lib/assets/profile_logo.png"),
+                width: 40,
+                height: 40,
+                fit: BoxFit.cover,
+              ),
+            ),
           ],
         ),
         title: const Text('Appointments'),
@@ -52,7 +51,9 @@ class AppointmentsScreen extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(vertical: 8),
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: AssetImage('lib/assets/profile_logo.png'),
+                        backgroundImage: AssetImage(
+                          'lib/assets/profile_logo.png',
+                        ),
                       ),
                       title: Text('Abdullah Hussein'),
                       subtitle: Column(
@@ -66,7 +67,6 @@ class AppointmentsScreen extends StatelessWidget {
                               SizedBox(width: 4),
                               Text('13, Nov 2025'),
                             ],
-                            
                           ),
                           Row(
                             children: [
@@ -74,7 +74,6 @@ class AppointmentsScreen extends StatelessWidget {
                               SizedBox(width: 4),
                               Text('9:00 - 9:30 PM'),
                             ],
-                            
                           ),
                           SizedBox(height: 4),
                           Row(
@@ -86,15 +85,24 @@ class AppointmentsScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      trailing: isUpcoming
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text('25:01:30:15', style: TextStyle(fontWeight: FontWeight.bold)),
-                                Text('left'),
-                              ],
-                            )
-                          : const Icon(Icons.check_circle, color: Colors.green),
+                      trailing:
+                          isUpcoming
+                              ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text(
+                                    '25:01:30:15',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text('left'),
+                                ],
+                              )
+                              : const Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                              ),
                     ),
                   );
                 }),

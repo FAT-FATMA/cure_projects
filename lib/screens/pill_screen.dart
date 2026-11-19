@@ -72,7 +72,6 @@ class MedicinesScreen extends StatelessWidget {
                             medicineImage: medicine.imagePath,
                             dose: medicine.dose,
                             onCheckDone: () async {
-                              
                               if ((medicine.next_date!.year ==
                                       DateTime.now().year &&
                                   medicine.next_date!.month ==
@@ -95,7 +94,6 @@ class MedicinesScreen extends StatelessWidget {
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              
                                               notifier.updatePill(
                                                 Medicine(
                                                   id: medicine.id,
@@ -146,20 +144,22 @@ class MedicinesScreen extends StatelessWidget {
                                               );
 
                                               Navigator.pop(context);
-                                              if(medicine.taken/medicine.period >= 1){
-                                                
+                                              if (medicine.taken /
+                                                      medicine.period >=
+                                                  1) {
                                                 notifier.removePill(
                                                   medicine.id,
                                                 );
-                                              
-                                              } else{
-                                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Medicine checked successfully',
-                                    ),
-                                  ),
-                                );
+                                              } else {
+                                                ScaffoldMessenger.of(
+                                                  context,
+                                                ).showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text(
+                                                      'Medicine checked successfully',
+                                                    ),
+                                                  ),
+                                                );
                                               }
                                             },
                                             child: const Text('Check Done'),

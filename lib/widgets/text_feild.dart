@@ -7,7 +7,7 @@ class TextFeild extends StatelessWidget {
   final Function(String) onChange;
   // Callback function to handle text changes
   //TextEditingController nameController = TextEditingController();
-  //String selectedUserType = 'patient'; 
+  //String selectedUserType = 'patient';
 
   TextFeild({
     super.key,
@@ -31,6 +31,5 @@ class TextFeild extends StatelessWidget {
         ),
       ),
     );
-   
   }
 }

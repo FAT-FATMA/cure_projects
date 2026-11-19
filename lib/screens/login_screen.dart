@@ -62,18 +62,24 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                       final user = credential.user;
                       if (user == null) {
-                        throw StateError('Unable to load the signed-in account.');
+                        throw StateError(
+                          'Unable to load the signed-in account.',
+                        );
                       }
 
                       final prefs = await SharedPreferences.getInstance();
                       final savedName = prefs.getString('username_${user.uid}');
-                      final savedUserType = prefs.getString('usertype_${user.uid}') ?? 'patient';
+                      final savedUserType =
+                          prefs.getString('usertype_${user.uid}') ?? 'patient';
 
                       await prefs.setString(
                         'username',
                         savedName ?? user.displayName ?? email.split('@').first,
                       );
-                      await prefs.setString('usertype', savedUserType ?? 'patient');
+                      await prefs.setString(
+                        'usertype',
+                        savedUserType ?? 'patient',
+                      );
                       await prefs.setBool('isLoggedIn', true);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -84,14 +90,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
 
-                      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/home',
+                        (route) => false,
+                      );
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'user-not-found') {
                         showErrorMessage(
                           context,
                           'No user found for that email.',
                         );
-                      } else if (e.code == 'wrong-password' || e.code == 'invalid-credential') {
+                      } else if (e.code == 'wrong-password' ||
+                          e.code == 'invalid-credential') {
                         showErrorMessage(context, 'Wrong password provided.');
                       } else {
                         showErrorMessage(context, e.message ?? 'Login failed');

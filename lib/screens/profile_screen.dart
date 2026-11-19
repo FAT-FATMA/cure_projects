@@ -49,9 +49,7 @@ class ProfileScreen extends ConsumerWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => const AppointmentsScreen(),
-                  ),
+                  MaterialPageRoute(builder: (_) => const AppointmentsScreen()),
                 );
               },
               leading: const Icon(Icons.calendar_today),

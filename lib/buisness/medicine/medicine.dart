@@ -1,4 +1,3 @@
-
 class Medicine {
   String medicineName, imagePath, frequency;
   int period, id, taken, dose;

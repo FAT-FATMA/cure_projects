@@ -36,7 +36,7 @@ class _HospitalCardState extends State<HospitalCard> {
       padding: const EdgeInsets.all(10),
       height: 163,
       decoration: BoxDecoration(
-        color:const Color.fromARGB(255,242,242,242),
+        color: const Color.fromARGB(255, 242, 242, 242),
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
